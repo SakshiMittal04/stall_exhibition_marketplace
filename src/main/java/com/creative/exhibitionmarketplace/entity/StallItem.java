@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 @Table(name = "stall_items")
 public class StallItem {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "stall_id")

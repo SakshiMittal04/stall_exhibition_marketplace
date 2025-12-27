@@ -31,7 +31,7 @@ public class StallService {
         Stall stall = stallRepository.findById(stallId)
                 .orElseThrow(() -> new RuntimeException("Stall not found"));
 
-        item.setId(UUID.randomUUID().toString());
+        item.setId(Long.valueOf(UUID.randomUUID().toString()));
         item.setStall(stall);
         return stallItemRepository.save(item);
     }

@@ -1,5 +1,5 @@
 -- ===========================
--- USERS
+-- USERS (VARCHAR ID)
 -- ===========================
 INSERT INTO users (id, name, email, phone, registered_at)
 VALUES
@@ -7,25 +7,29 @@ VALUES
 ('u2', 'Priya Sharma', 'priya@example.com', '9876500000', CURRENT_TIMESTAMP);
 
 -- ===========================
--- STALLS
+-- STALLS (BIGINT ID – MANUAL)
 -- ===========================
+-- stalls.id is BIGINT and NOT identity → must provide ID
 INSERT INTO stalls (id, name, location, description)
 VALUES
-('s1', 'Food Corner', 'Hall A', 'Fast food and snacks'),
-('s2', 'Crafts World', 'Hall B', 'Handmade crafts and souvenirs');
+(1, 'Food Corner', 'Hall A', 'Fast food and snacks'),
+(2, 'Snacks Hub', 'Hall B', 'Quick bites'),
+(3, 'Crafts World', 'Hall C', 'Handmade crafts'),
+(4, 'Wood Art', 'Hall D', 'Wooden artifacts');
 
 -- ===========================
--- STALL ITEMS
+-- STALL ITEMS (BIGINT ID – IDENTITY)
 -- ===========================
-INSERT INTO stall_items (id, stall_id, name, description, price, available)
+-- id is auto-generated → DO NOT provide id
+INSERT INTO stall_items (stall_id, name, description, price, available)
 VALUES
-('si1', 's1', 'Burger', 'Veg Burger', 120, true),
-('si2', 's1', 'French Fries', 'Crispy fries', 80, true),
-('si3', 's2', 'Handmade Basket', 'Eco friendly basket', 300, true),
-('si4', 's2', 'Wooden Toy', 'Handcrafted toy', 450, true);
+(1, 'Burger', 'Veg Burger', 120, true),
+(1, 'French Fries', 'Crispy fries', 80, true),
+(3, 'Handmade Basket', 'Eco friendly basket', 300, true),
+(4, 'Wooden Toy', 'Handcrafted toy', 450, true);
 
 -- ===========================
--- CARTS (1 per user)
+-- CARTS (VARCHAR ID)
 -- ===========================
 INSERT INTO carts (id, user_id, created_at, updated_at)
 VALUES
@@ -35,11 +39,12 @@ VALUES
 -- ===========================
 -- CART ITEMS
 -- ===========================
+-- stall_item_id is BIGINT → must be numeric
 INSERT INTO cart_items (id, cart_id, stall_item_id, quantity, added_at)
 VALUES
-('ci1', 'c1', 'si1', 2, CURRENT_TIMESTAMP),  -- Rohan: 2 Burgers
-('ci2', 'c1', 'si2', 1, CURRENT_TIMESTAMP),  -- Rohan: 1 Fries
-('ci3', 'c2', 'si3', 1, CURRENT_TIMESTAMP);  -- Priya: 1 Basket
+('ci1', 'c1', 1, 2, CURRENT_TIMESTAMP), -- Burger
+('ci2', 'c1', 2, 1, CURRENT_TIMESTAMP), -- Fries
+('ci3', 'c2', 3, 1, CURRENT_TIMESTAMP); -- Basket
 
 -- ===========================
 -- DELIVERY PARTNERS
@@ -52,17 +57,19 @@ VALUES
 -- ===========================
 -- ORDERS
 -- ===========================
+-- stall_id is BIGINT → numeric
 INSERT INTO orders
 (id, user_id, stall_id, delivery_partner_id, status, total_amount, placed_at, updated_at)
 VALUES
-('o1', 'u1', 's1', 'd1', 'PLACED', 320, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('o2', 'u2', 's2', 'd2', 'DELIVERED', 300, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('o1', 'u1', 1, 'd1', 'PLACED', 320, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('o2', 'u2', 3, 'd2', 'DELIVERED', 300, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- ===========================
 -- ORDER ITEMS
 -- ===========================
+-- stall_item_id is BIGINT → numeric
 INSERT INTO order_items (id, order_id, stall_item_id, quantity, price)
 VALUES
-('oi1', 'o1', 'si1', 2, 120),
-('oi2', 'o1', 'si2', 1, 80),
-('oi3', 'o2', 'si3', 1, 300);
+('oi1', 'o1', 1, 2, 120),
+('oi2', 'o1', 2, 1, 80),
+('oi3', 'o2', 3, 1, 300);

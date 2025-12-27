@@ -24,7 +24,7 @@ public class CartService {
         this.stallItemRepository = stallItemRepository;
     }
 
-    public Cart addItemToCart(String cartId, String stallItemId, int quantity) {
+    public Cart addItemToCart(String cartId, Long stallItemId, int quantity) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 

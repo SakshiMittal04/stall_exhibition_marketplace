@@ -16,7 +16,7 @@ public class UserController {private final UserService userService;
 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        user.setId(UUID.randomUUID().toString());
+        user.setId(Integer.valueOf(UUID.randomUUID().toString()));
         return userService.createUser(user);
     }
 

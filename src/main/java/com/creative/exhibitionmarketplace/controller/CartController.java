@@ -14,8 +14,8 @@ public class CartController {
     }
 
     @PostMapping("/{cartId}/items")
-    public Cart addToCart(@PathVariable String cartId,
-                          @RequestParam Long itemId,
+    public Cart addToCart(@PathVariable Integer cartId,
+                          @RequestParam Integer itemId,
                           @RequestParam int quantity) {
         return cartService.addItemToCart(cartId, itemId, quantity);
     }

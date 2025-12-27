@@ -4,16 +4,18 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "stall_items")
 public class StallItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "stall_id")
+    @JoinColumn(name = "stall_id", nullable = false)
     private Stall stall;
 
     private String name;

@@ -11,15 +11,17 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 public class Order {
+
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "stall_id")
+    @JoinColumn(name = "stall_id", nullable = false)
     private Stall stall;
 
     @ManyToOne
@@ -37,6 +39,6 @@ public class Order {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 }

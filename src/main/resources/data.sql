@@ -1,75 +1,108 @@
 -- ===========================
--- USERS (VARCHAR ID)
+-- USERS
 -- ===========================
-INSERT INTO users (id, name, email, phone, registered_at)
-VALUES
-('u1', 'Rohan Kumar', 'rohan@example.com', '9876543210', CURRENT_TIMESTAMP),
-('u2', 'Priya Sharma', 'priya@example.com', '9876500000', CURRENT_TIMESTAMP);
+INSERT INTO users (name, email, phone, registered_at)
+SELECT 'Rohan Kumar', 'rohan@example.com', '9876543210', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'rohan@example.com');
+
+INSERT INTO users (name, email, phone, registered_at)
+SELECT 'Priya Sharma', 'priya@example.com', '9876500000', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'priya@example.com');
 
 -- ===========================
--- STALLS (BIGINT ID – MANUAL)
+-- STALLS
 -- ===========================
--- stalls.id is BIGINT and NOT identity → must provide ID
-INSERT INTO stalls (id, name, location, description)
-VALUES
-(1, 'Food Corner', 'Hall A', 'Fast food and snacks'),
-(2, 'Snacks Hub', 'Hall B', 'Quick bites'),
-(3, 'Crafts World', 'Hall C', 'Handmade crafts'),
-(4, 'Wood Art', 'Hall D', 'Wooden artifacts');
+INSERT INTO stalls (name, location, description)
+SELECT 'Food Corner', 'Hall A', 'Fast food and snacks'
+WHERE NOT EXISTS (SELECT 1 FROM stalls WHERE name = 'Food Corner');
+
+INSERT INTO stalls (name, location, description)
+SELECT 'Snacks Hub', 'Hall B', 'Quick bites'
+WHERE NOT EXISTS (SELECT 1 FROM stalls WHERE name = 'Snacks Hub');
+
+INSERT INTO stalls (name, location, description)
+SELECT 'Crafts World', 'Hall C', 'Handmade crafts'
+WHERE NOT EXISTS (SELECT 1 FROM stalls WHERE name = 'Crafts World');
+
+INSERT INTO stalls (name, location, description)
+SELECT 'Wood Art', 'Hall D', 'Wooden artifacts'
+WHERE NOT EXISTS (SELECT 1 FROM stalls WHERE name = 'Wood Art');
 
 -- ===========================
--- STALL ITEMS (BIGINT ID – IDENTITY)
+-- STALL ITEMS (5 PER STALL)
 -- ===========================
--- id is auto-generated → DO NOT provide id
+
+-- Food Corner
 INSERT INTO stall_items (stall_id, name, description, price, available)
-VALUES
-(1, 'Burger', 'Veg Burger', 120, true),
-(1, 'French Fries', 'Crispy fries', 80, true),
-(3, 'Handmade Basket', 'Eco friendly basket', 300, true),
-(4, 'Wooden Toy', 'Handcrafted toy', 450, true);
+SELECT s.id, v.name, v.description, v.price, true
+FROM stalls s
+JOIN (VALUES
+    ('Burger', 'Veg Burger', 120),
+    ('French Fries', 'Crispy fries', 80),
+    ('Pizza Slice', 'Cheese pizza', 150),
+    ('Sandwich', 'Grilled sandwich', 100),
+    ('Cold Drink', 'Chilled beverage', 60)
+) AS v(name, description, price)
+ON s.name = 'Food Corner'
+WHERE NOT EXISTS (
+    SELECT 1 FROM stall_items si WHERE si.name = v.name
+);
 
--- ===========================
--- CARTS (VARCHAR ID)
--- ===========================
-INSERT INTO carts (id, user_id, created_at, updated_at)
-VALUES
-('c1', 'u1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('c2', 'u2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+-- Snacks Hub
+INSERT INTO stall_items (stall_id, name, description, price, available)
+SELECT s.id, v.name, v.description, v.price, true
+FROM stalls s
+JOIN (VALUES
+    ('Nachos', 'Cheesy nachos', 140),
+    ('Popcorn', 'Butter popcorn', 90),
+    ('Samosa', 'Spicy samosa', 40),
+    ('Spring Roll', 'Veg spring roll', 110),
+    ('Milkshake', 'Vanilla shake', 130)
+) AS v(name, description, price)
+ON s.name = 'Snacks Hub'
+WHERE NOT EXISTS (
+    SELECT 1 FROM stall_items si WHERE si.name = v.name
+);
 
--- ===========================
--- CART ITEMS
--- ===========================
--- stall_item_id is BIGINT → must be numeric
-INSERT INTO cart_items (id, cart_id, stall_item_id, quantity, added_at)
-VALUES
-('ci1', 'c1', 1, 2, CURRENT_TIMESTAMP), -- Burger
-('ci2', 'c1', 2, 1, CURRENT_TIMESTAMP), -- Fries
-('ci3', 'c2', 3, 1, CURRENT_TIMESTAMP); -- Basket
+-- Crafts World
+INSERT INTO stall_items (stall_id, name, description, price, available)
+SELECT s.id, v.name, v.description, v.price, true
+FROM stalls s
+JOIN (VALUES
+    ('Handmade Basket', 'Eco friendly basket', 300),
+    ('Clay Pot', 'Traditional clay pot', 250),
+    ('Wall Hanging', 'Decorative hanging', 400),
+    ('Handcrafted Lamp', 'Artisan lamp', 600),
+    ('Jute Bag', 'Reusable jute bag', 350)
+) AS v(name, description, price)
+ON s.name = 'Crafts World'
+WHERE NOT EXISTS (
+    SELECT 1 FROM stall_items si WHERE si.name = v.name
+);
+
+-- Wood Art
+INSERT INTO stall_items (stall_id, name, description, price, available)
+SELECT s.id, v.name, v.description, v.price, true
+FROM stalls s
+JOIN (VALUES
+    ('Wooden Toy', 'Handcrafted toy', 450),
+    ('Wooden Frame', 'Photo frame', 500),
+    ('Wooden Bowl', 'Polished bowl', 380),
+    ('Wooden Sculpture', 'Art sculpture', 900),
+    ('Key Holder', 'Wall key holder', 280)
+) AS v(name, description, price)
+ON s.name = 'Wood Art'
+WHERE NOT EXISTS (
+    SELECT 1 FROM stall_items si WHERE si.name = v.name
+);
 
 -- ===========================
 -- DELIVERY PARTNERS
 -- ===========================
-INSERT INTO delivery_partners (id, name, phone, email, assigned_since)
-VALUES
-('d1', 'Delivery Guy 1', '9000000001', 'dg1@mail.com', CURRENT_TIMESTAMP),
-('d2', 'Delivery Guy 2', '9000000002', 'dg2@mail.com', CURRENT_TIMESTAMP);
+INSERT INTO delivery_partners (name, phone, email, assigned_since)
+SELECT 'Delivery Guy 1', '9000000001', 'dg1@mail.com', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM delivery_partners WHERE email = 'dg1@mail.com');
 
--- ===========================
--- ORDERS
--- ===========================
--- stall_id is BIGINT → numeric
-INSERT INTO orders
-(id, user_id, stall_id, delivery_partner_id, status, total_amount, placed_at, updated_at)
-VALUES
-('o1', 'u1', 1, 'd1', 'PLACED', 320, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('o2', 'u2', 3, 'd2', 'DELIVERED', 300, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
--- ===========================
--- ORDER ITEMS
--- ===========================
--- stall_item_id is BIGINT → numeric
-INSERT INTO order_items (id, order_id, stall_item_id, quantity, price)
-VALUES
-('oi1', 'o1', 1, 2, 120),
-('oi2', 'o1', 2, 1, 80),
-('oi3', 'o2', 3, 1, 300);
+INSERT INTO delivery_partners (name, phone, email, assigned_since)
+SELECT 'Delivery Guy 2', '9000000002', 'dg2@mail.com', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (SELECT 1 FROM delivery_partners WHERE email = 'dg2@mail.com');

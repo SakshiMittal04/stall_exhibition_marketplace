@@ -9,13 +9,15 @@ import java.util.List;
 @Entity
 @Table(name = "stalls")
 public class Stall {
+
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private String name;
     private String description;
-    private String location; // optional
+    private String location;
 
-    @OneToMany(mappedBy = "stall")
+    @OneToMany(mappedBy = "stall", cascade = CascadeType.ALL)
     private List<StallItem> items;
 }

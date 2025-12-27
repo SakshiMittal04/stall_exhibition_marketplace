@@ -26,12 +26,12 @@ public class OrderService {
         this.cartRepository = cartRepository;
     }
 
-    public Order placeOrder(String cartId) {
+    public Order placeOrder(Integer cartId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
         Order order = new Order();
-        order.setId(UUID.randomUUID().toString());
+        order.setId(Integer.valueOf(UUID.randomUUID().toString()));
         order.setUser(cart.getUser());
         order.setStatus("PLACED");
         order.setPlacedAt(LocalDateTime.now());
@@ -41,7 +41,7 @@ public class OrderService {
 
         for (CartItem ci : cart.getItems()) {
             OrderItem oi = new OrderItem();
-            oi.setId(UUID.randomUUID().toString());
+            oi.setId(Integer.valueOf(UUID.randomUUID().toString()));
             oi.setOrder(order);
             oi.setStallItem(ci.getStallItem());
             oi.setQuantity(ci.getQuantity());

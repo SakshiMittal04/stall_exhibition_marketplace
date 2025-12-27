@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StallItemRepository extends JpaRepository<StallItem, Long> {
-    List<StallItem> findByStallId(Long stallId);
+public interface StallItemRepository extends JpaRepository<StallItem, Integer> {
+    List<StallItem> findByStallId(Integer stallId);
 
     List<StallItem> findByAvailableTrue();
 }

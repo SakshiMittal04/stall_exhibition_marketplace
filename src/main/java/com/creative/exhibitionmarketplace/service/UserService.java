@@ -25,7 +25,7 @@ public class UserService {
         userRepository.save(user);
 
         Cart cart = new Cart();
-        cart.setId(UUID.randomUUID().toString());
+        cart.setId(Integer.valueOf(UUID.randomUUID().toString()));
         cart.setUser(user);
         cart.setCreatedAt(LocalDateTime.now());
         cart.setUpdatedAt(LocalDateTime.now());

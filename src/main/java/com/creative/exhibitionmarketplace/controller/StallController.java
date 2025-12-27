@@ -26,7 +26,7 @@ public class StallController {
     }
 
     @PostMapping("/{stallId}/items")
-    public StallItem addItem(@PathVariable String stallId,
+    public StallItem addItem(@PathVariable Integer stallId,
                              @RequestBody StallItem item) {
         return stallService.addItemToStall(stallId, item);
     }

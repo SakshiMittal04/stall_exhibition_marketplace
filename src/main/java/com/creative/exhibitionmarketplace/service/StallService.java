@@ -27,11 +27,11 @@ public class StallService {
         return stallRepository.save(stall);
     }
 
-    public StallItem addItemToStall(String stallId, StallItem item) {
+    public StallItem addItemToStall(Integer stallId, StallItem item) {
         Stall stall = stallRepository.findById(stallId)
                 .orElseThrow(() -> new RuntimeException("Stall not found"));
 
-        item.setId(Long.valueOf(UUID.randomUUID().toString()));
+        item.setId(Math.toIntExact(Long.valueOf(UUID.randomUUID().toString())));
         item.setStall(stall);
         return stallItemRepository.save(item);
     }

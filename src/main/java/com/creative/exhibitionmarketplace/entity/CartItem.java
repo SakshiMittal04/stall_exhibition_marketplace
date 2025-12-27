@@ -4,19 +4,22 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name = "cart_items")
 public class CartItem {
+
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "stall_item_id")
+    @JoinColumn(name = "stall_item_id", nullable = false)
     private StallItem stallItem;
 
     private int quantity;

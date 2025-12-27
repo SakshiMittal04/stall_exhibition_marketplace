@@ -24,7 +24,7 @@ public class CartService {
         this.stallItemRepository = stallItemRepository;
     }
 
-    public Cart addItemToCart(String cartId, Long stallItemId, int quantity) {
+    public Cart addItemToCart(Integer cartId, Integer stallItemId, int quantity) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
@@ -32,7 +32,7 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Item not found"));
 
         CartItem cartItem = new CartItem();
-        cartItem.setId(UUID.randomUUID().toString());
+        cartItem.setId(Integer.valueOf(UUID.randomUUID().toString()));
         cartItem.setCart(cart);
         cartItem.setStallItem(item);
         cartItem.setQuantity(quantity);

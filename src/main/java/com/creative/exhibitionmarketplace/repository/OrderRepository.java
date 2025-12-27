@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface OrderRepository extends JpaRepository<Order, String> {
-    List<Order> findByUserId(String userId);
+public interface OrderRepository extends JpaRepository<Order, Integer> {
+    List<Order> findByUserId(Integer userId);
 
     List<Order> findByStatus(String status);
 }

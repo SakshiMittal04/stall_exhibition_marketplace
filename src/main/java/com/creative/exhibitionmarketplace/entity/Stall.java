@@ -1,5 +1,6 @@
 package com.creative.exhibitionmarketplace.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,5 +20,6 @@ public class Stall {
     private String location;
 
     @OneToMany(mappedBy = "stall", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<StallItem> items;
 }

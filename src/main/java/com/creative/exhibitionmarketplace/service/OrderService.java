@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 @Service
 public class OrderService {
@@ -30,31 +31,45 @@ public class OrderService {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
+        if (cart.getItems() == null || cart.getItems().isEmpty()) {
+            throw new RuntimeException("Cart is empty");
+        }
+
         Order order = new Order();
-        order.setId(Integer.valueOf(UUID.randomUUID().toString()));
         order.setUser(cart.getUser());
         order.setStatus("PLACED");
         order.setPlacedAt(LocalDateTime.now());
         order.setUpdatedAt(LocalDateTime.now());
 
-        BigDecimal total = BigDecimal.ZERO;
+        Order savedOrder = orderRepository.save(order);
+        BigDecimal totalAmount = BigDecimal.ZERO;
 
         for (CartItem ci : cart.getItems()) {
             OrderItem oi = new OrderItem();
-            oi.setId(Integer.valueOf(UUID.randomUUID().toString()));
-            oi.setOrder(order);
+            oi.setOrder(savedOrder);
             oi.setStallItem(ci.getStallItem());
             oi.setQuantity(ci.getQuantity());
             oi.setPrice(ci.getStallItem().getPrice());
 
-            total = total.add(
-                    oi.getPrice().multiply(BigDecimal.valueOf(oi.getQuantity()))
-            );
-
             orderItemRepository.save(oi);
+
+            totalAmount = totalAmount.add(
+                    ci.getStallItem().getPrice()
+                            .multiply(BigDecimal.valueOf(ci.getQuantity()))
+            );
         }
 
-        order.setTotalAmount(total);
-        return orderRepository.save(order);
+        savedOrder.setTotalAmount(totalAmount);
+        orderRepository.save(savedOrder);
+
+        // Clear cart
+        cart.getItems().clear();
+        cartRepository.save(cart);
+
+        return savedOrder;
+    }
+
+    public List<Order> getOrdersForUser(Integer userId) {
+        return orderRepository.findByUserId(userId);
     }
 }

@@ -15,9 +15,15 @@ public class StallController {
         this.stallService = stallService;
     }
 
+
     @GetMapping
     public List<Stall> getStalls() {
         return stallService.getAllStalls();
+    }
+
+    @GetMapping("/{stallId}/items")
+    public List<StallItem> getStallItems(@PathVariable Integer stallId) {
+        return stallService.getItemsByStall(stallId);
     }
 
     @PostMapping
@@ -26,8 +32,10 @@ public class StallController {
     }
 
     @PostMapping("/{stallId}/items")
-    public StallItem addItem(@PathVariable Integer stallId,
-                             @RequestBody StallItem item) {
+    public StallItem addItemToStall(
+            @PathVariable Integer stallId,
+            @RequestBody StallItem item) {
         return stallService.addItemToStall(stallId, item);
     }
+
 }

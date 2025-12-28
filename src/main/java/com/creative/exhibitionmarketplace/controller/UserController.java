@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.UUID;
 @RestController
 @RequestMapping("/api/users")
-public class UserController {private final UserService userService;
+public class UserController {
+
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -16,7 +18,6 @@ public class UserController {private final UserService userService;
 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        user.setId(Integer.valueOf(UUID.randomUUID().toString()));
         return userService.createUser(user);
     }
 

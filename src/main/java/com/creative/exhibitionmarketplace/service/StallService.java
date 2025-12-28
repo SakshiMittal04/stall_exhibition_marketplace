@@ -35,4 +35,11 @@ public class StallService {
         item.setStall(stall);
         return stallItemRepository.save(item);
     }
+
+    public List<StallItem> getItemsByStall(Integer stallId) {
+        Stall stall = stallRepository.findById(stallId)
+                .orElseThrow(() -> new RuntimeException("Stall not found"));
+        return stall.getItems();
+    }
+
 }

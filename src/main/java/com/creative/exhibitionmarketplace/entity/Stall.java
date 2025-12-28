@@ -2,11 +2,14 @@ package com.creative.exhibitionmarketplace.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "stalls")
 public class Stall {
@@ -19,7 +22,7 @@ public class Stall {
     private String description;
     private String location;
 
-    @OneToMany(mappedBy = "stall", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "stall", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<StallItem> items;
 }

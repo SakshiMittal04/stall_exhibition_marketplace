@@ -1,11 +1,14 @@
 package com.creative.exhibitionmarketplace.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "delivery_partners")
 public class DeliveryPartner {

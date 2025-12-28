@@ -11,7 +11,6 @@ import com.creative.exhibitionmarketplace.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 @Service
 public class CartService {
     private final CartRepository cartRepository;

@@ -26,4 +26,12 @@ public class OrderController {
     public List<Order> getOrders(@PathVariable Integer userId) {
         return orderService.getOrdersForUser(userId);
     }
+
+    @PutMapping("/{orderId}/assign/{deliveryPartnerId}")
+    public Order assignDeliveryPartner(
+            @PathVariable Integer orderId,
+            @PathVariable Integer deliveryPartnerId) {
+
+        return orderService.assignDeliveryPartner(orderId, deliveryPartnerId);
+    }
 }

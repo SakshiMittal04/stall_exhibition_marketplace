@@ -1,9 +1,11 @@
 package com.creative.exhibitionmarketplace.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,4 +25,8 @@ public class DeliveryPartner {
 
     @Column(name = "assigned_since")
     private LocalDateTime assignedSince;
+
+    @OneToMany(mappedBy = "deliveryPartner")
+    @JsonBackReference
+    private List<Order> orders;
 }

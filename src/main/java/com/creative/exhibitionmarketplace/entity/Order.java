@@ -28,6 +28,7 @@ public class Order {
     @JoinColumn(name = "stall_id", nullable = false)
     private Stall stall;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "delivery_partner_id")
     private DeliveryPartner deliveryPartner;
@@ -46,4 +47,5 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<OrderItem> items;
+
 }

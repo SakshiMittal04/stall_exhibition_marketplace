@@ -2,6 +2,7 @@ package com.creative.exhibitionmarketplace.service;
 
 import com.creative.exhibitionmarketplace.entity.*;
 import com.creative.exhibitionmarketplace.repository.CartRepository;
+import com.creative.exhibitionmarketplace.repository.DeliveryPartnerRepository;
 import com.creative.exhibitionmarketplace.repository.OrderItemRepository;
 import com.creative.exhibitionmarketplace.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,15 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;
+    private final DeliveryPartnerRepository deliveryPartnerRepository;
 
     public OrderService(OrderRepository orderRepository,
                         OrderItemRepository orderItemRepository,
-                        CartRepository cartRepository) {
+                        CartRepository cartRepository, DeliveryPartnerRepository deliveryPartnerRepository) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.cartRepository = cartRepository;
+        this.deliveryPartnerRepository = deliveryPartnerRepository;
     }
 
     public Order placeOrder(Integer cartId) {
@@ -78,6 +81,25 @@ public class OrderService {
         return savedOrder;
     }
 
+
+    public Order assignDeliveryPartner(Integer orderId, Integer deliveryPartnerId) {
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (!"PLACED".equals(order.getStatus())) {
+            throw new RuntimeException("Delivery partner can only be assigned to PLACED orders");
+        }
+
+        DeliveryPartner partner = deliveryPartnerRepository.findById(deliveryPartnerId)
+                .orElseThrow(() -> new RuntimeException("Delivery partner not found"));
+
+        order.setDeliveryPartner(partner);
+        order.setStatus("ASSIGNED");
+        order.setUpdatedAt(LocalDateTime.now());
+
+        return orderRepository.save(order);
+    }
 
 
     public List<Order> getOrdersForUser(Integer userId) {

@@ -42,4 +42,8 @@ public class StallService {
         return stall.getItems();
     }
 
+    public List<Stall> searchByKeyword(String keyword) {
+        return stallRepository.findByDescriptionContainingIgnoreCase(keyword);
+    }
+
 }

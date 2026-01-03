@@ -3,7 +3,7 @@ package com.creative.exhibitionmarketplace.controller;
 import com.creative.exhibitionmarketplace.entity.Cart;
 import com.creative.exhibitionmarketplace.service.CartService;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/carts")
 public class CartController {

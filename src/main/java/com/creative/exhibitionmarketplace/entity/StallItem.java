@@ -27,4 +27,6 @@ public class StallItem {
     private String description;
     private BigDecimal price;
     private boolean available;
+    private String imageUrl;
+
 }

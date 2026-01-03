@@ -5,7 +5,7 @@ import com.creative.exhibitionmarketplace.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
